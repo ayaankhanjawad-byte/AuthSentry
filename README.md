@@ -101,13 +101,5 @@ This project is developed for **educational and learning purposes**.
 
 ---
 
-### ✅ Why this version is better
 
-* Professional tone (good for **LinkedIn & recruiters**)
-* Clear sections
-* No unnecessary complexity
-* Security awareness shown
-* Easy to understand for anyone reading the repo
-
----
 
