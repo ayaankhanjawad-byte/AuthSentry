@@ -1,0 +1,4 @@
+project_id = "trlegeualmmmkcwomdtm"
+
+[functions.analyze-content]
+verify_jwt = false
