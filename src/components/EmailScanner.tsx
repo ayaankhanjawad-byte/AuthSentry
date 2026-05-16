@@ -6,7 +6,7 @@ import { Mail, Loader2, Sparkles } from "lucide-react";
 import { RiskMeter } from "./RiskMeter";
 import { RiskBadge } from "./RiskBadge";
 import type { AnalysisResponse } from "@/types/scan";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase, isSupabaseConfigured } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const SAMPLE_EMAILS = [
@@ -37,10 +37,20 @@ export function EmailScanner() {
       return;
     }
 
+    if (!isSupabaseConfigured) {
+      toast({
+        title: "Backend not configured",
+        description: "Add your Supabase anon key (VITE_SUPABASE_PUBLISHABLE_KEY) in .env or Vercel, then redeploy.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsAnalyzing(true);
     setResult(null);
 
     try {
+      const supabase = getSupabase();
       const { data, error } = await supabase.functions.invoke("analyze-content", {
         body: { content, type: "email" },
       });

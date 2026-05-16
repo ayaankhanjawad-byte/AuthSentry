@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { StatsCard } from "./StatsCard";
 import { ScanResultCard } from "./ScanResultCard";
 import { Shield, ShieldAlert, ShieldCheck, ShieldX, Activity, TrendingUp } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase, isSupabaseConfigured } from "@/integrations/supabase/client";
 import type { ScanResult, ScanStats } from "@/types/scan";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,9 +18,14 @@ export function Dashboard() {
   }, []);
 
   const fetchData = async () => {
+    if (!isSupabaseConfigured) {
+      setLoading(false);
+      return;
+    }
+
     try {
       // Fetch recent scans
-      const { data: scans, error } = await supabase
+      const { data: scans, error } = await getSupabase()
         .from("scan_results")
         .select("*")
         .order("scanned_at", { ascending: false })
